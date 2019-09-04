@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div id="cola1" class="col-md-6">
+
+
+        <h1>Cola 1</h1>
+        <ul class="list-group">
+            @foreach (var oTicket in Model.cola1)
+            {
+                <li class="list-group-item">@oTicket.ticket_id - @oTicket.nombre</li>
+            }
+        </ul>
+
+        @using (Html.BeginForm("BorrarTicket", "Home", FormMethod.Post))
+        {
+            @Html.Hidden("cola", 1)
+            <button id="btn1" type="submit" class="btn btn-primary" style="margin: auto;">Siguiente</button>
+        }
+
+    </div>
+
+    <div id="cola1" class="col-md-6">
+
+
+        <h1>Cola 2</h1>
+        <ul class="list-group">
+            @foreach (var oTicket in Model.cola2)
+            {
+                <li class="list-group-item">@oTicket.ticket_id - @oTicket.nombre</li>
+            }
+        </ul>
+
+        @using (Html.BeginForm("BorrarTicket", "Home", FormMethod.Post))
+        {
+            @Html.Hidden("cola", 1)
+            <button id="btn1" type="submit" class="btn btn-primary" style="margin: auto;">Siguiente</button>
+        }
+
+    </div>

@@ -1,8 +1,128 @@
-﻿@{
+﻿@model WebTicket.Models.IndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Ticket de atención al cliente</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-9">
+                <div id="colas" class="row">
+                    @Html.Partial("_ListaCola", Model)
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <h1>Nuevo Ticket</h1>
+
+                @using (Html.BeginForm("CrearTicket", "Home", FormMethod.Post, new { id = "AjaxForm" }))
+                {
+                    <div class="form-group">
+                        <label>ID</label>
+                        @Html.TextBoxFor(d => d.ticket_id, "", new { @class = "form-control" })
+
+                    </div>
+                    <div class="form-group">
+                        <label>NOMBRE</label>
+                        @Html.TextBoxFor(d => d.nombre, "", new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary" style="margin: auto;">Guardar</button>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+
+    $(function () {
+        $("#AjaxForm").submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: "@Url.Action("CrearTicket", "Home")",
+                data: {
+                    ticket_id: $("#ticket_id").val(),
+                    nombre: $("#nombre").val()
+                },
+                type: "post"
+            }).done(function (result) {
+
+                // Actualiza el resultado HTML
+                $("#colas").html(result);
+
+                // Limpia el formulario
+                        $("#ticket_id").val("");
+                        $("#nombre").val("");
+                       
+
+            }).fail(function (xhr, status, error) {
+
+            }).always(function () {
+
+                });
+        });
+    });
+    setInterval(function () { atender1(); }, 120000);
+    setInterval(function(){ atender2(); }, 180000);
+
+    function atender1() {
+        console.log("atender 1");
+        $.ajax({
+                url: "@Url.Action("BorrarTicket", "Home")",
+                data: {
+                    cola: 1
+                    
+                },
+                type: "post"
+            }).done(function (result) {
+
+                // Actualiza el resultado HTML
+                $("#colas").html(result);
+
+                
+                       
+
+            }).fail(function (xhr, status, error) {
+
+            }).always(function () {
+
+                });
+    }
+
+    function atender2() {
+        console.log("atender 2");
+        $.ajax({
+                url: "@Url.Action("BorrarTicket", "Home")",
+                data: {
+                    cola: 2
+                    
+                },
+                type: "post"
+            }).done(function (result) {
+
+                // Actualiza el resultado HTML
+                $("#colas").html(result);
+
+                
+                       
+
+            }).fail(function (xhr, status, error) {
+
+            }).always(function () {
+
+                });
+    }
+    </script>
+}
